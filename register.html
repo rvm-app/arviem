@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Vending Machine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="user-login" class="hidden">
+            <h2>User Register</h2>
+            <form>
+            <input type="username" id="register-username" placeholder="Username">
+            <input type="password" id="register-password" placeholder="Password">
+            <button onclick="registerUser()">Register</button>
+            <p>Already have an account? <a href="login.html" onclick="showUserLogin()">Login here</a> </p>
+        </form>
+    </div>
+
+        <div id="user-login" class="hidden">
+            <h2>User Login</h2>
+            <form>
+            <input type="text" id="login-username" placeholder="Username">
+            <input type="text" id="login-password" placeholder="Password">
+            <button onclick="loginUser()">Login</button>
+            <p>Don't have an account? <a href="register.html" onclick="showUserRegistration()">Register here</a> </p>
+        </form>
+        </div>
+        
+    <script src="script2.js"></script>
+</body>
+</html>     
