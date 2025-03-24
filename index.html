@@ -15,21 +15,14 @@
             <button id="loginButton">Login</button>
         </div>
 
-        <form id="dashboard" class="hidden">
+        <div id="dashboard" class="hidden">
             <h2>User Dashboard</h2>
             <p>Welcome, <span id="usernameDisplay"></span></p>
             <p>Bottle Count: <span id="bottleCount">0</span></p>
             <p>Points: <span id="bottlePoints">0</span></p>
             <button onclick="logout()">Logout</button>
                 
-
-            <h3>Transfer Points</h3>
-            <form id="transferForm">
-                <input type="text" id="toUser" placeholder="Recipient Username">
-                <input type="number" id="transferAmount" placeholder="Points to Transfer">
-                <button type="submit">Transfer</button>
-            </form>
-        </form>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
