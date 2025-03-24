@@ -9,28 +9,39 @@
 <body>
     <div class="container">
         <h1>ReClaimIt</h1>
-        
+
+        <!-- User/Admin Selection -->
         <div id="selection">
             <button id="userBtn">User</button>
             <button id="adminBtn">Admin</button>
         </div>
 
-        <div id="userLogin" class="hidden">
+        <!-- User Registration & Login (Hidden by Default) -->
+        <div id="userForms" class="hidden">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="text" id="registerUsername" placeholder="Username" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" id="loginLink">Login here</a></p>
+
             <h2>User Login</h2>
             <form id="userLoginForm">
                 <input type="text" id="userUsername" placeholder="Username" required>
                 <input type="password" id="userPassword" placeholder="Password" required>
-                <button type="submit">Login</button>
+                <button type="submit">Login as User</button>
             </form>
             <button class="backBtn">Back</button>
         </div>
 
+        <!-- Admin Login (Hidden by Default) -->
         <div id="adminLogin" class="hidden">
             <h2>Admin Login</h2>
             <form id="adminLoginForm">
                 <input type="text" id="adminUsername" placeholder="Admin Username" required>
                 <input type="password" id="adminPassword" placeholder="Admin Password" required>
-                <button type="submit">Login</button>
+                <button type="submit">Login as Admin</button>
             </form>
             <button class="backBtn">Back</button>
         </div>
