@@ -20,10 +20,12 @@
                     <th>Points Used</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="userTable">
                 <!-- User data will be populated here -->
             </tbody>
         </table>
+
+        <p><strong>Total Points Received:</strong> <span id="adminPoints">0</span></p>
 
         <button id="logout">Logout</button>
     </div>
@@ -37,12 +39,53 @@
                 window.location.href = "index.html";
             }
 
+            // Example user data array for display purposes
+            const users = [
+                { username: "user1", bottles: 5, pointsEarned: 20, pointsUsed: 10 },
+                { username: "user2", bottles: 7, pointsEarned: 25, pointsUsed: 5 }
+            ];
+
+            // Populate user table
+            const userTable = document.getElementById("userTable");
+            users.forEach(user => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.bottles}</td>
+                    <td>${user.pointsEarned}</td>
+                    <td>${user.pointsUsed}</td>
+                `;
+                userTable.appendChild(row);
+            });
+
+            // Simulate points received by admin from transfers
+            const adminPoints = localStorage.getItem("adminPoints") || 0;
+            document.getElementById("adminPoints").textContent = adminPoints;
+
+            // Logout functionality
             document.getElementById("logout").addEventListener("click", function () {
                 localStorage.removeItem("loggedInUser");
                 localStorage.removeItem("userType");
+                localStorage.removeItem("adminPoints"); // Optional: Clear admin-specific data
                 window.location.href = "index.html";
             });
+
+            // Example: Update admin points when points are transferred (simulate transfer)
+            document.addEventListener("transferToAdmin", function (event) {
+                const pointsTransferred = event.detail.points; // Points sent to admin
+                const newAdminPoints = parseInt(adminPoints) + pointsTransferred;
+                localStorage.setItem("adminPoints", newAdminPoints);
+                document.getElementById("adminPoints").textContent = newAdminPoints;
+            });
         });
+
+        // Simulating a points transfer event
+        setTimeout(() => {
+            const transferEvent = new CustomEvent("transferToAdmin", {
+                detail: { points: 10 } // Example points transferred
+            });
+            document.dispatchEvent(transferEvent);
+        }, 3000); // Simulate transfer after 3 seconds
     </script>
 </body>
 </html>
