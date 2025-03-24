@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
      const selection = document.getElementById("selection");
+     const userLogin = document.getElementById("userLogin");
      const userForms = document.getElementById("userForms");
      const adminLogin = document.getElementById("adminLogin");
      const backButtons = document.querySelectorAll(".backBtn");
@@ -7,60 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
      // Show User Login/Register
      document.getElementById("userBtn").addEventListener("click", function () {
          selection.style.display = "none";
+         userLogin.style.display = "block";
          userForms.style.display = "block";
      });
- document.getElementById("transferPoints").addEventListener("click", function () {
-     const recipient = document.getElementById("recipientUsername").value.trim();
-     const pointsToTransfer = parseInt(document.getElementById("pointsToTransfer").value);
  
-     // Validate recipient and points
-     if (!recipient || isNaN(pointsToTransfer) || pointsToTransfer <= 0) {
-         alert("Please enter a valid recipient and a valid number of points to transfer.");
-         return;
-     }
- 
-     // Restrict transfer to "admin" or "user2" only
-     if (recipient !== "admin" && recipient !== "user2") {
-         alert("Points can only be transferred to 'admin' or 'user2'.");
-         return;
-     }
- 
-     // Example logic for transferring points
-     const userPoints = parseInt(document.getElementById("pointsEarned").textContent);
-     if (pointsToTransfer > userPoints) {
-         alert("Insufficient points to transfer.");
-         return;
-     }
- 
-     // Update points after transfer
-     document.getElementById("pointsEarned").textContent = userPoints - pointsToTransfer;
-     alert(`Successfully transferred ${pointsToTransfer} points to ${recipient}!`);
- 
-     // Optionally, update pointsUsed
-     const pointsUsed = parseInt(document.getElementById("pointsUsed").textContent) + pointsToTransfer;
-     document.getElementById("pointsUsed").textContent = pointsUsed;
- 
-     // Example: send data to server (uncomment to implement)
-     /*
-     fetch('https://your-server-endpoint/transfer', {
-         method: 'POST',
-         headers: {
-             'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-             sender: loggedInUser,
-             recipient: recipient,
-             points: pointsToTransfer
-         })
-     }).then(response => response.json())
-       .then(data => {
-           console.log(data);
-           alert('Points transferred successfully!');
-       }).catch(error => {
-           console.error('Error:', error);
-       });
-     */
- });
      // Show Admin Login
      document.getElementById("adminBtn").addEventListener("click", function () {
          selection.style.display = "none";
@@ -70,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
      // Go back to selection menu
      backButtons.forEach(btn => {
          btn.addEventListener("click", function () {
+             userLogin.style.display = "none";
              userForms.style.display = "none";
              adminLogin.style.display = "none";
              selection.style.display = "block";
@@ -110,11 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
          event.preventDefault();
          let adminUsername = document.getElementById("adminUsername").value;
          let adminPassword = document.getElementById("adminPassword").value;
- // Admin Login
- document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
-     event.preventDefault();
-     let adminUsername = document.getElementById("adminUsername").value;
-     let adminPassword = document.getElementById("adminPassword").value;
  
          if (adminUsername === "admin" && adminPassword === "admin123") {
              localStorage.setItem("loggedInUser", adminUsername);
@@ -123,13 +70,5 @@ document.addEventListener("DOMContentLoaded", function () {
          } else {
              alert("Invalid admin credentials!");
          }
-     // Set the admin credentials
-     if (adminUsername === "admin" && adminPassword === "admin") {
-         localStorage.setItem("loggedInUser", adminUsername);
-         localStorage.setItem("userType", "admin");
-         window.location.href = "admin_dashboard.html";
-     } else {
-         alert("Invalid admin credentials!");
-     }
      });
  });
