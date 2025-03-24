@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-     const selection = document.getElementById("selection");
+      const selection = document.getElementById("selection");
      const userForms = document.getElementById("userForms");
      const adminLogin = document.getElementById("adminLogin");
      const backButtons = document.querySelectorAll(".backBtn");
-  });
-    
+ 
+     // Show User Login/Register
      const userBtn = document.getElementById("userBtn");
      if (userBtn) {
          userBtn.addEventListener("click", function () {
@@ -120,7 +120,24 @@ document.addEventListener("DOMContentLoaded", function () {
  
              // Example: send data to server (uncomment to implement)
              /*
-             
              fetch('https://your-server-endpoint/transfer', {
                  method: 'POST',
                  headers: {
+                     'Content-Type': 'application/json'
+                 },
+                 body: JSON.stringify({
+                     sender: loggedInUser,
+                     recipient: recipient,
+                     points: pointsToTransfer
+                 })
+             }).then(response => response.json())
+               .then(data => {
+                   console.log(data);
+                   alert('Points transferred successfully!');
+               }).catch(error => {
+                   console.error('Error:', error);
+               });
+             */
+         });
+     }
+ });
