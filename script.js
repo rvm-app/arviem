@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("pointsUsed").textContent = pointsUsed;
 
             // Example: send data to server (uncomment to implement)
-            /*
+            
             fetch('https://your-server-endpoint/transfer', {
                 method: 'POST',
                 headers: {
