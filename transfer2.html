@@ -9,59 +9,48 @@
 <body>
     <div class="container">
         <h2>ReClaimIt</h2>
-        <h1>Transfer Points</h1>
-        <p><strong>Current Balance:</strong> <span id="balance">0</span> points</p>
-        <div class="input-field">
-            <label for="sendTo">Send To (Username)</label>
-            <input type="text" id="sendTo" placeholder="Enter username or 'Admin'">
-        </div>
-        <div class="input-field">
-            <label for="amount">Amount</label>
-            <input type="number" id="amount" placeholder="Enter amount">
-        </div>
-        <button class="done-btn" onclick="transferPoints()">Transfer</button>
-        <p id="message"></p>
-        <p><a href="index.html" class="back-link">Back to Dashboard</a></p>
-    </div>
+       <h3>Transfer Points</h3>
+            <form id="transferForm">
+                <input type="text" id="toUser" placeholder="Recipient Username">
+                <input type="number" id="transferAmount" placeholder="Points to Transfer">
+                <button type="submit">Transfer</button>
+                
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let currentUser = localStorage.getItem("currentUser");
-            let users = JSON.parse(localStorage.getItem("users")) || {};
-            if (currentUser && users[currentUser]) {
-                document.getElementById("balance").textContent = users[currentUser].pointsEarned;
-            }
-        });
+       document.getElementById('transferForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-        function transferPoints() {
-            let currentUser = localStorage.getItem("currentUser");
-            let users = JSON.parse(localStorage.getItem("users")) || {};
-            let sendTo = document.getElementById("sendTo").value.trim();
-            let amount = parseInt(document.getElementById("amount").value);
-            let message = document.getElementById("message");
+    const fromUser = localStorage.getItem('currentUser');
+    const toUser = document.getElementById('toUser').value;
+    const amount = parseInt(document.getElementById('transferAmount').value);
 
-            if (!sendTo || isNaN(amount) || amount <= 0) {
-                message.textContent = "Invalid input. Please enter a valid username and amount.";
-                return;
-            }
+    if (!fromUser || !toUser || isNaN(amount) || amount <= 0) {
+        alert("Invalid transfer details!");
+        return;
+    }
 
-            if (!users[currentUser] || users[currentUser].pointsEarned < amount) {
-                message.textContent = "Insufficient points.";
-                return;
-            }
+    const fromUserID = getUserID(fromUser);
+    const toUserID = getUserID(toUser);
 
-            if (sendTo === "Admin" || users[sendTo]) {
-                users[currentUser].pointsEarned -= amount;
-                if (sendTo === "Admin") {
-                    users[sendTo] = users[sendTo] || { pointsEarned: 0 };
-                }
-                users[sendTo].pointsEarned = (users[sendTo].pointsEarned || 0) + amount;
-                localStorage.setItem("users", JSON.stringify(users));
-                document.getElementById("balance").textContent = users[currentUser].pointsEarned;
-                message.textContent = `Successfully transferred ${amount} points to ${sendTo}.`;
-            } else {
-                message.textContent = "Recipient not found.";
-            }
-        }
+    const fromPointsPin = 11 + (fromUserID * 10);
+    const toPointsPin = 11 + (toUserID * 10);
+
+    let fromUserPoints = await fetchBlynkData(fromPointsPin);
+    fromUserPoints = parseInt(fromUserPoints);
+
+    if (fromUserPoints < amount) {
+        alert("Not enough points!");
+        return;
+    }
+
+    let toUserPoints = await fetchBlynkData(toPointsPin);
+    toUserPoints = parseInt(toUserPoints);
+
+    await updateBlynkData(fromPointsPin, fromUserPoints - amount);
+    await updateBlynkData(toPointsPin, toUserPoints + amount);
+
+    alert(`Transferred ${amount} points from ${fromUser} to ${toUser}`);
+    loadUserData(fromUser);
+});
     </script>
 </body>
 </html>
