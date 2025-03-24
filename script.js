@@ -9,7 +9,58 @@ document.addEventListener("DOMContentLoaded", function () {
         selection.style.display = "none";
         userForms.style.display = "block";
     });
+document.getElementById("transferPoints").addEventListener("click", function () {
+    const recipient = document.getElementById("recipientUsername").value.trim();
+    const pointsToTransfer = parseInt(document.getElementById("pointsToTransfer").value);
 
+    // Validate recipient and points
+    if (!recipient || isNaN(pointsToTransfer) || pointsToTransfer <= 0) {
+        alert("Please enter a valid recipient and a valid number of points to transfer.");
+        return;
+    }
+
+    // Restrict transfer to "admin" or "user2" only
+    if (recipient !== "admin" && recipient !== "user2") {
+        alert("Points can only be transferred to 'admin' or 'user2'.");
+        return;
+    }
+
+    // Example logic for transferring points
+    const userPoints = parseInt(document.getElementById("pointsEarned").textContent);
+    if (pointsToTransfer > userPoints) {
+        alert("Insufficient points to transfer.");
+        return;
+    }
+
+    // Update points after transfer
+    document.getElementById("pointsEarned").textContent = userPoints - pointsToTransfer;
+    alert(`Successfully transferred ${pointsToTransfer} points to ${recipient}!`);
+
+    // Optionally, update pointsUsed
+    const pointsUsed = parseInt(document.getElementById("pointsUsed").textContent) + pointsToTransfer;
+    document.getElementById("pointsUsed").textContent = pointsUsed;
+
+    // Example: send data to server (uncomment to implement)
+    /*
+    fetch('https://your-server-endpoint/transfer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            sender: loggedInUser,
+            recipient: recipient,
+            points: pointsToTransfer
+        })
+    }).then(response => response.json())
+      .then(data => {
+          console.log(data);
+          alert('Points transferred successfully!');
+      }).catch(error => {
+          console.error('Error:', error);
+      });
+    */
+});
     // Show Admin Login
     document.getElementById("adminBtn").addEventListener("click", function () {
         selection.style.display = "none";
