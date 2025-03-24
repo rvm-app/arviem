@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>User Dashboard</title>
     <link rel="stylesheet" href="styles.css"> <!-- Add your CSS file -->
 </head>
 <body>
     <div class="container">
-        <h2>Welcome, <span id="usernameDisplay"></span>!</h2>
+        <h2>User Dashboard</h2>
+        <p>Welcome, <span id="usernameDisplay"></span></p>
 
         <div class="stats">
             <p><strong>Bottles Collected:</strong> <span id="bottlesCount">0</span></p>
@@ -20,6 +21,18 @@
         <button id="logout-btn">Logout</button>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.getElementById("transfer-btn").addEventListener("click", function () {
+            window.location.href = "transfer.html"; // Redirect to transfer page
+        });
+
+        document.getElementById("logout-btn").addEventListener("click", function () {
+            localStorage.removeItem("loggedInUser"); // Clear login data
+            window.location.href = "index.html"; // Redirect to login
+        });
+
+        // Load username from local storage
+        document.getElementById("usernameDisplay").textContent = localStorage.getItem("loggedInUser") || "User";
+    </script>
 </body>
 </html>
