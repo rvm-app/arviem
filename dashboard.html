@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Add your CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -12,27 +12,36 @@
         <p>Welcome, <span id="usernameDisplay"></span></p>
 
         <div class="stats">
-            <p><strong>Bottles Collected:</strong> <span id="bottlesCount">0</span></p>
-            <p><strong>Points Earned:</strong> <span id="pointsEarned">0</span></p>
-            <p><strong>Points Used:</strong> <span id="pointsUsed">0</span></p>
+            <button id="bottlesCollected">Bottles Collected</button>
+            <button id="pointsEarned">Points Earned</button>
+            <button id="pointsUsed">Points Used</button>
         </div>
 
-        <button id="transfer-btn">Transfer Points</button>
-        <button id="logout-btn">Logout</button>
+        <button id="logout">Logout</button>
+
+        <h2>Transfer Points</h2>
+        <input type="text" id="recipientUsername" placeholder="Recipient Username">
+        <input type="number" id="pointsToTransfer" placeholder="Points to Transfer">
+        <button id="transferPoints">Transfer</button>
     </div>
 
     <script>
-        document.getElementById("transfer-btn").addEventListener("click", function () {
-            window.location.href = "transfer.html"; // Redirect to transfer page
-        });
+        document.addEventListener("DOMContentLoaded", function () {
+            let loggedInUser = localStorage.getItem("loggedInUser");
+            let userType = localStorage.getItem("userType");
 
-        document.getElementById("logout-btn").addEventListener("click", function () {
-            localStorage.removeItem("loggedInUser"); // Clear login data
-            window.location.href = "index.html"; // Redirect to login
-        });
+            if (!loggedInUser || userType !== "user") {
+                window.location.href = "index.html";
+            } else {
+                document.getElementById("usernameDisplay").textContent = loggedInUser;
+            }
 
-        // Load username from local storage
-        document.getElementById("usernameDisplay").textContent = localStorage.getItem("loggedInUser") || "User";
+            document.getElementById("logout").addEventListener("click", function () {
+                localStorage.removeItem("loggedInUser");
+                localStorage.removeItem("userType");
+                window.location.href = "index.html";
+            });
+        });
     </script>
 </body>
 </html>
