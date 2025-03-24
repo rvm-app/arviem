@@ -1,65 +1,33 @@
-function showUserLogin() {
-    document.getElementById('user-login').classList.remove('hidden');
-    document.getElementById('entry-choice').classList.add('hidden');
-}
-
-function showAdminLogin() {
-    document.getElementById('admin-login').classList.remove('hidden');
-    document.getElementById('entry-choice').classList.add('hidden');
-}
-
-function showRegister() {
-    document.getElementById('user-registration').classList.remove('hidden');
-    document.getElementById('user-login').classList.add('hidden');
-}
-
-function registerUser() {
-    const username = document.getElementById('register-username').value;
-    const password = document.getElementById('register-password').value;
-
-    if (!username || !password) {
-        alert("❌ Please enter a username and password!");
+// Load user data when dashboard opens
+window.onload = function () {
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+        window.location.href = "index.html"; // Redirect if not logged in
         return;
     }
 
+    document.getElementById("user-name").textContent = currentUser;
+
+    // Retrieve user data
     let users = JSON.parse(localStorage.getItem('users')) || {};
-    if (users[username]) {
-        alert("❌ Username already exists!");
-        return;
-    }
+    let userData = users[currentUser] || { bottles: 0, pointsEarned: 0, pointsUsed: 0 };
 
-    users[username] = { password };
-    localStorage.setItem('users', JSON.stringify(users));
+    let tableRow = `
+        <tr>
+            <td>${userData.bottles}</td>
+            <td>${userData.pointsEarned}</td>
+            <td>${userData.pointsUsed}</td>
+        </tr>`;
+    document.getElementById("user-data").innerHTML = tableRow;
+};
 
-    alert("✅ Registration successful! You can now log in.");
-
-    // Hide registration form and show login form
-    document.getElementById('user-registration').classList.add('hidden');
-    document.getElementById('user-login').classList.remove('hidden');
+// Logout function
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = "index.html";
 }
 
-
-function loginUser() {
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    let users = JSON.parse(localStorage.getItem('users')) || {};
-    if (!users[username] || users[username].password !== password) {
-        alert("❌ Invalid username or password!");
-        return;
-    }
-
-    localStorage.setItem('currentUser', username);
-    window.location.href = "dashboard.html";
-}
-
-function loginAdmin() {
-    const adminPassword = document.getElementById('admin-password').value;
-
-    if (adminPassword === "admin123") {
-        localStorage.setItem('isAdmin', true);
-        window.location.href = "dashboard.html";
-    } else {
-        alert("❌ Incorrect admin password!");
-    }
+// Redirect to transfer page
+function goToTransfer() {
+    window.location.href = "transfer.html";
 }
