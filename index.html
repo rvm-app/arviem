@@ -15,13 +15,11 @@
             <button id="loginButton">Login</button>
         </div>
 
-        <div id="dashboard" class="hidden">
+        <form id="dashboard" class="hidden">
             <h2>User Dashboard</h2>
-            <form>
             <p>Welcome, <span id="usernameDisplay"></span></p>
             <p>Bottle Count: <span id="bottleCount">0</span></p>
             <p>Points: <span id="bottlePoints">0</span></p>
-            </form>
             <button onclick="logout()">Logout</button>
                 
 
@@ -31,7 +29,7 @@
                 <input type="number" id="transferAmount" placeholder="Points to Transfer">
                 <button type="submit">Transfer</button>
             </form>
-        </div>
+        </form>
     </div>
     <script src="script.js"></script>
 </body>
