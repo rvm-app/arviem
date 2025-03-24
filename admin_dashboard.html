@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Dashboard</h2>
+        <p>Welcome, Admin</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Bottles</th>
+                    <th>Points Earned</th>
+                    <th>Points Used</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User data will be populated here -->
+            </tbody>
+        </table>
+
+        <button id="logout">Logout</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let loggedInUser = localStorage.getItem("loggedInUser");
+            let userType = localStorage.getItem("userType");
+
+            if (!loggedInUser || userType !== "admin") {
+                window.location.href = "index.html";
+            }
+
+            document.getElementById("logout").addEventListener("click", function () {
+                localStorage.removeItem("loggedInUser");
+                localStorage.removeItem("userType");
+                window.location.href = "index.html";
+            });
+        });
+    </script>
+</body>
+</html>
