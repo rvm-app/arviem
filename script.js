@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const userForms = document.getElementById("userForms");
     const adminLogin = document.getElementById("adminLogin");
     const backButtons = document.querySelectorAll(".backBtn");
-
+    });
     // Show User Login/Register
     document.getElementById("userBtn").addEventListener("click", function () {
         selection.style.display = "none";
