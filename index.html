@@ -1,100 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reverse Vending Machine</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+const BLYNK_AUTH = "cSX4tsklZueXt8cbGAKREbpG4u5OPIhM"; // Replace with your Blynk Token
 
-    <div class="container">
-        <div id="entry-choice">
-            <h2>ReClaimIt</h2>
-            <button onclick="showUserRegistration()">User</button>
-            <button onclick="showAdminLogin()">Admin</button>
-        </div>
+document.getElementById('transferForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-        <div id="user-registration" class="hidden">
-            <h2>Register</h2>
-            <input type="text" id="register-username" placeholder="Username">
-            <input type="text" id="register-password" placeholder="Password">
-            <button onclick="registerUser()">Register</button>
-            <p>Already have an account? <a href="login.html" onclick="showUserLogin()">Login here</a> </p>
-        </div>
+    const fromUser = localStorage.getItem('currentUser');  // Get the logged-in user
+    const toUser = document.getElementById('toUser').value.trim(); // Get the recipient
+    const amount = parseInt(document.getElementById('transferAmount').value); // Points to transfer
 
-        <div id="user-login" class="hidden">
-            <h2>User Login</h2>
-            <input type="text" id="login-username" placeholder="Username">
-            <input type="text" id="login-password" placeholder="Password">
-            <button onclick="loginUser()">Login</button>
-            <p>Don't have an account? <a href="login.html" onclick="showUserRegistration()">Login here</a> </p>
-        </div>
+    if (!fromUser || !toUser || isNaN(amount) || amount <= 0) {
+        alert("❌ Invalid transfer details!");
+        return;
+    }
 
-        <div id="admin-login" class="hidden">
-            <h2>Admin Login</h2>
-            <input type="password" id="admin-password" placeholder="Admin Password">
-            <button onclick="loginAdmin()">Login</button>
-        </div>
+    if (fromUser === toUser) {
+        alert("❌ You cannot transfer points to yourself!");
+        return;
+    }
 
-        <div id="user-dashboard" class="hidden">
-            <h2>User Dashboard</h2>
-          <p>Welcome, <span id="user-name"></span></p>
-          <table>
-            <thead>
-                <tr>
-                    <th>Bottles Collected</th>
-                    <th>Points Earned</th>
-                    <th>Points Used</th>
-                </tr>
-            </thead>
-            <tbody id="user-data">
-                
-            </tbody>
-        </table>
-          
-            <button onclick="logout()">Logout</button>
-            <button onclick="transfer()">Transfer</button>
-            
-            <div id="user-transfer" class="hidden">
-                <h2>Transfer</h2>
-              <p>Hi, <span id="user-name"></span></p>
-              <table>
-                <thead>
-                    <tr>
-                        <th>Bottles Collected</th>
-                        <th>Points Earned</th>
-                        <th>Points Used</th>
-                    </tr>
-                </thead>
-                <tbody id="user-data">
-                    
-                </tbody>
-            </table>
-           
-              
+    const fromUserID = getUserID(fromUser);
+    const toUserID = getUserID(toUser);
 
-        </div>
+    const fromPointsPin = 11 + (fromUserID * 10); // Sender's points
+    const toPointsPin = 11 + (toUserID * 10); // Receiver's points
 
-        <div id="admin-dashboard" class="hidden">
-            <h2>Admin Dashboard</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Bottles Collected</th>
-                        <th>Points Earned</th>
-                        <th>Points Used</th>
-                    </tr>
-                </thead>
-                <tbody id="user-data">
-                    
-                </tbody>
-            </table>
-            <button onclick="logout()">Logout</button>
-        </div>
-    </div>
+    let fromUserPoints = await fetchBlynkData(fromPointsPin);
+    fromUserPoints = parseInt(fromUserPoints);
 
-    <script src="script.js"></script>
-</body>
-</html>
+    if (fromUserPoints < amount) {
+        alert("❌ Not enough points!");
+        return;
+    }
+
+    let toUserPoints = await fetchBlynkData(toPointsPin);
+    toUserPoints = parseInt(toUserPoints);
+
+    await updateBlynkData(fromPointsPin, fromUserPoints - amount); // Deduct points
+    await updateBlynkData(toPointsPin, toUserPoints + amount); // Add points
+
+    alert(`✅ Transferred ${amount} points from ${fromUser} to ${toUser}`);
+    loadUserData(fromUser); // Refresh sender's data
+});
+
+// **Fetch Data from Blynk**
+async function fetchBlynkData(pin) {
+    try {
+        let response = await fetch(`https://blynk.cloud/external/api/get?token=${BLYNK_AUTH}&V${pin}`);
+        return response.ok ? await response.text() : "0";
+    } catch (error) {
+        console.error(`⚠️ Error fetching V${pin}:`, error);
+        return "0";
+    }
+}
+
+// **Update Blynk Data**
+async function updateBlynkData(pin, value) {
+    try {
+        let response = await fetch(`https://blynk.cloud/external/api/update?token=${BLYNK_AUTH}&V${pin}=${value}`);
+        if (!response.ok) {
+            console.error(`❌ Failed to update V${pin}`);
+        }
+    } catch (error) {
+        console.error(`⚠️ Error updating V${pin}:`, error);
+    }
+}
+
+// **Get Unique User ID**
+function getUserID(username) {
+    return username.length % 10; // Example: Generate a unique ID for each user
+}
