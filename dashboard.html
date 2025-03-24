@@ -12,9 +12,9 @@
         <p>Welcome, <span id="usernameDisplay"></span></p>
 
         <div class="stats">
-            <button id="bottlesCollected">Bottles Collected</button>
-            <button id="pointsEarned">Points Earned</button>
-            <button id="pointsUsed">Points Used</button>
+            <p><strong>Bottles Collected:</strong> <span id="bottlesCollected">0</span></p>
+            <p><strong>Points Earned:</strong> <span id="pointsEarned">0</span></p>
+            <p><strong>Points Used:</strong> <span id="pointsUsed">0</span></p>
         </div>
 
         <button id="logout">Logout</button>
@@ -35,6 +35,11 @@
             } else {
                 document.getElementById("usernameDisplay").textContent = loggedInUser;
             }
+
+            // Example dynamic update for bottles and points
+            document.getElementById("bottlesCollected").textContent = 10; // Replace with actual value
+            document.getElementById("pointsEarned").textContent = 15;    // Replace with actual value
+            document.getElementById("pointsUsed").textContent = 5;       // Replace with actual value
 
             document.getElementById("logout").addEventListener("click", function () {
                 localStorage.removeItem("loggedInUser");
