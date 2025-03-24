@@ -3,26 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReClaimIt - Transfer Points</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Transfer Points</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Add your CSS file -->
 </head>
 <body>
-
     <div class="container">
         <h2>Transfer Points</h2>
-        <form id="transferForm">
-            <label for="toUser">Recipient Username:</label>
-            <input type="text" id="toUser" placeholder="Enter recipient's username" required>
 
-            <label for="transferAmount">Points to Transfer:</label>
-            <input type="number" id="transferAmount" placeholder="Enter points" required>
+        <input type="text" id="recipientUsername" placeholder="Recipient Username">
+        <input type="number" id="transferAmount" placeholder="Points to Transfer">
 
-            <button type="submit">Send Points</button>
-        </form>
-
-        <button onclick="goBack()">Back to Dashboard</button>
+        <button id="transferSubmit">Transfer</button>
+        <button id="back-btn">Back to Dashboard</button>
     </div>
 
-    <script src="transfer.js"></script>
+    <script>
+        document.getElementById("back-btn").addEventListener("click", function () {
+            window.location.href = "dashboard.html"; // Redirect back
+        });
+
+        document.getElementById("transferSubmit").addEventListener("click", function () {
+            let recipient = document.getElementById("recipientUsername").value;
+            let amount = document.getElementById("transferAmount").value;
+
+            if (recipient && amount > 0) {
+                alert("Points transferred to " + recipient + "!");
+                window.location.href = "dashboard.html"; // Redirect after transfer
+            } else {
+                alert("Please enter valid details.");
+            }
+        });
+    </script>
 </body>
 </html>
