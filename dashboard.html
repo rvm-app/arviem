@@ -3,46 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReClaimIt - Dashboard</title>
+    <title>User Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <div class="container">
-        <div id="user-dashboard" class="hidden">
-            <h2>User Dashboard</h2>
-            <p>Welcome, <span id="user-name"></span></p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Bottles Collected</th>
-                        <th>Points Earned</th>
-                        <th>Points Used</th>
-                    </tr>
-                </thead>
-                <tbody id="user-data"></tbody>
-            </table>
-            <button onclick="logout()">Logout</button>
-            <button onclick="goToTransfer()">Transfer Points</button>
-        </div>
-
-        <div id="admin-dashboard" class="hidden">
-            <h2>Admin Dashboard</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Bottles Collected</th>
-                        <th>Points Earned</th>
-                        <th>Points Used</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-user-data"></tbody>
-            </table>
-            <button onclick="logout()">Logout</button>
-        </div>
+        <h2>User Dashboard</h2>
+        <p>Welcome, <span id="user-name"></span></p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Bottles Collected</th>
+                    <th>Points Earned</th>
+                    <th>Points Used</th>
+                </tr>
+            </thead>
+            <tbody id="user-data"></tbody>
+        </table>
+        
+        <button onclick="logout()">Logout</button>
+        <button onclick="goToTransfer()">Transfer</button>
     </div>
 
-    <script src="dashboard.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
