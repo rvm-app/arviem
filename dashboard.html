@@ -1,106 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h2>User Dashboard</h2>
-        <p>Welcome, <span id="usernameDisplay"></span></p>
-
-        <div class="stats">
-            <p><strong>Bottles Collected:</strong> <span id="bottlesCollected">0</span></p>
-            <p><strong>Points Earned:</strong> <span id="pointsEarned">0</span></p>
-            <p><strong>Points Used:</strong> <span id="pointsUsed">0</span></p>
-        </div>
-
-        <button id="logout">Logout</button>
-
-        <h2>Transfer Points</h2>
-        <input type="text" id="recipientUsername" placeholder="Recipient Username">
-        <input type="number" id="pointsToTransfer" placeholder="Points to Transfer">
-        <button id="transferPoints">Transfer</button>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let loggedInUser = localStorage.getItem("loggedInUser");
-            let userType = localStorage.getItem("userType");
-
-            if (!loggedInUser || userType !== "user") {
-                window.location.href = "index.html";
-            } else {
-                document.getElementById("usernameDisplay").textContent = loggedInUser;
-            }
-
-            // Example dynamic update for bottles and points
-            document.getElementById("bottlesCollected").textContent = 10; // Replace with actual value
-            document.getElementById("pointsEarned").textContent = 15;    // Replace with actual value
-            document.getElementById("pointsUsed").textContent = 5;       // Replace with actual value
-
-            document.getElementById("logout").addEventListener("click", function () {
-                localStorage.removeItem("loggedInUser");
-                localStorage.removeItem("userType");
-                window.location.href = "index.html";
-            });
-
-            // Transfer Points button click with recipient restriction
-            document.getElementById("transferPoints").addEventListener("click", function () {
-                const recipient = document.getElementById("recipientUsername").value.trim();
-                const pointsToTransfer = parseInt(document.getElementById("pointsToTransfer").value);
-
-                // Validate recipient and points
-                if (!recipient || isNaN(pointsToTransfer) || pointsToTransfer <= 0) {
-                    alert("Please enter a valid recipient and a valid number of points to transfer.");
-                    return;
-                }
-
-                // Restrict transfer to "admin" or "user2" only
-                if (recipient !== "admin" && recipient !== "user2") {
-                    alert("Points can only be transferred to 'admin' or 'user2'.");
-                    return;
-                }
-
-                const userPoints = parseInt(document.getElementById("pointsEarned").textContent);
-                if (pointsToTransfer > userPoints) {
-                    alert("Insufficient points to transfer.");
-                    return;
-                }
-
-                // Update points after transfer
-                document.getElementById("pointsEarned").textContent = userPoints - pointsToTransfer;
-                alert(`Successfully transferred ${pointsToTransfer} points to ${recipient}!`);
-
-                // Optionally, update pointsUsed
-                const pointsUsed = parseInt(document.getElementById("pointsUsed").textContent) + pointsToTransfer;
-                document.getElementById("pointsUsed").textContent = pointsUsed;
-
-                // Example: send data to server (uncomment to implement)
-/*
-                
-                fetch('https://your-server-endpoint/transfer', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        sender: loggedInUser,
-                        recipient: recipient,
-                        points: pointsToTransfer
-                    })
-                }).then(response => response.json())
-                  .then(data => {
-                      console.log(data);
-                      alert('Points transferred successfully!');
-                  }).catch(error => {
-                      console.error('Error:', error);
-                  });
-                */
-            });
-        });
-    </script>
-</body>
-</html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>User Dashboard</title>
+     <link rel="stylesheet" href="styles.css">
+ </head>
+ <body>
+     <div class="container">
+         <h2>User Dashboard</h2>
+         <p>Welcome, <span id="usernameDisplay"></span></p>
+ 
+         <div class="stats">
+             <p><strong>Bottles Collected:</strong> <span id="bottlesCollected">0</span></p>
+             <p><strong>Points Earned:</strong> <span id="pointsEarned">0</span></p>
+             <p><strong>Points Used:</strong> <span id="pointsUsed">0</span></p>
+         </div>
+ 
+         <button id="logout">Logout</button>
+ 
+         <h2>Transfer Points</h2>
+         <input type="text" id="recipientUsername" placeholder="Recipient Username">
+         <input type="number" id="pointsToTransfer" placeholder="Points to Transfer">
+         <button id="transferPoints">Transfer</button>
+     </div>
+ 
+     <script>
+         document.addEventListener("DOMContentLoaded", function () {
+             let loggedInUser = localStorage.getItem("loggedInUser");
+             let userType = localStorage.getItem("userType");
+ 
+             if (!loggedInUser || userType !== "user") {
+                 window.location.href = "index.html";
+             } else {
+                 document.getElementById("usernameDisplay").textContent = loggedInUser;
+             }
+ 
+             // Example dynamic update for bottles and points
+             document.getElementById("bottlesCollected").textContent = 10; // Replace with actual value
+             document.getElementById("pointsEarned").textContent = 15;    // Replace with actual value
+             document.getElementById("pointsUsed").textContent = 5;       // Replace with actual value
+ 
+             document.getElementById("logout").addEventListener("click", function () {
+                 localStorage.removeItem("loggedInUser");
+                 localStorage.removeItem("userType");
+                 window.location.href = "index.html";
+             });
+ 
+             // Transfer Points button click with recipient restriction
+             document.getElementById("transferPoints").addEventListener("click", function () {
+                 const recipient = document.getElementById("recipientUsername").value.trim();
+                 const pointsToTransfer = parseInt(document.getElementById("pointsToTransfer").value);
+ 
+                 // Validate recipient and points
+                 if (!recipient || isNaN(pointsToTransfer) || pointsToTransfer <= 0) {
+                     alert("Please enter a valid recipient and a valid number of points to transfer.");
+                     return;
+                 }
+ 
+                 // Restrict transfer to "admin" or "user2" only
+                 if (recipient !== "admin" && recipient !== "user2") {
+                     alert("Points can only be transferred to 'admin' or 'user2'.");
+                     return;
+                 }
+ 
+                 const userPoints = parseInt(document.getElementById("pointsEarned").textContent);
+                 if (pointsToTransfer > userPoints) {
+                     alert("Insufficient points to transfer.");
+                     return;
+                 }
+ 
+                 // Update points after transfer
+                 document.getElementById("pointsEarned").textContent = userPoints - pointsToTransfer;
+                 alert(`Successfully transferred ${pointsToTransfer} points to ${recipient}!`);
+ 
+                 // Optionally, update pointsUsed
+                 const pointsUsed = parseInt(document.getElementById("pointsUsed").textContent) + pointsToTransfer;
+                 document.getElementById("pointsUsed").textContent = pointsUsed;
+ 
+                 // Example: send data to server (uncomment to implement)
+                 /*
+                 
+                 fetch('https://your-server-endpoint/transfer', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json'
+                     },
+                     body: JSON.stringify({
+                         sender: loggedInUser,
+                         recipient: recipient,
+                         points: pointsToTransfer
+                     })
+                 }).then(response => response.json())
+                   .then(data => {
+                       console.log(data);
+                       alert('Points transferred successfully!');
+                   }).catch(error => {
+                       console.error('Error:', error);
+                   });
+                 */
+             });
+         });
+     </script>
+ </body>
+ </html>
