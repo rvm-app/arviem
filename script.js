@@ -32,8 +32,12 @@ function registerUser() {
     localStorage.setItem('users', JSON.stringify(users));
 
     alert("✅ Registration successful! You can now log in.");
-    showUserLogin();
+
+    // Hide registration form and show login form
+    document.getElementById('user-registration').classList.add('hidden');
+    document.getElementById('user-login').classList.remove('hidden');
 }
+
 
 function loginUser() {
     const username = document.getElementById('login-username').value;
