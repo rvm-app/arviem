@@ -105,18 +105,19 @@ document.getElementById("transferPoints").addEventListener("click", function () 
         }
     });
 
-    // Admin Login
-    document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
-        event.preventDefault();
-        let adminUsername = document.getElementById("adminUsername").value;
-        let adminPassword = document.getElementById("adminPassword").value;
+// Admin Login
+document.getElementById("adminLoginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    let adminUsername = document.getElementById("adminUsername").value;
+    let adminPassword = document.getElementById("adminPassword").value;
 
-        if (adminUsername === "admin" && adminPassword === "admin123") {
-            localStorage.setItem("loggedInUser", adminUsername);
-            localStorage.setItem("userType", "admin");
-            window.location.href = "admin_dashboard.html";
-        } else {
-            alert("Invalid admin credentials!");
-        }
+    // Set the admin credentials
+    if (adminUsername === "admin" && adminPassword === "admin") {
+        localStorage.setItem("loggedInUser", adminUsername);
+        localStorage.setItem("userType", "admin");
+        window.location.href = "admin_dashboard.html";
+    } else {
+        alert("Invalid admin credentials!");
+    }
     });
 });
